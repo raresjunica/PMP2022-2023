@@ -1,9 +1,12 @@
+from numpy import random
+
 import arviz as az
 import matplotlib.pyplot as plt
 
 import numpy as np
 
 import pymc3 as pm
+import seaborn as sns
 
 
 # Generating data
@@ -22,12 +25,15 @@ X2 = np.random.randn(size) * 0.2
 Y = alpha + beta[0] * X1 + beta[1] * X2 + np.random.randn(size) * sigma
 
 # Vizualize the data
-fig, axes = plt.subplots(1, 2, sharex=True, figsize=(10, 4))
+fig, axes = plt.subplots(1, 3, sharex=True, figsize=(10, 4))
 axes[0].scatter(X1, Y, alpha=0.6)
 axes[1].scatter(X2, Y, alpha=0.6)
 axes[0].set_ylabel("Y")
 axes[0].set_xlabel("X1")
 axes[1].set_xlabel("X2")
+
+x = random.normal(loc=1, scale=2, size=(2,3))
+sns.distplot(random.normal(size=1000),hist=False)
 plt.show()
 
 # Define a model
