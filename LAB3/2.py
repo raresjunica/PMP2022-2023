@@ -13,11 +13,9 @@ if __name__ == '__main__':
         # probabilitate cutremur
         cutremur = pm.Bernoulli('C', 0.0005)
         # probabilitate incendiu in functie de cutremur
-        incendiu_cutremur = pm.Deterministic('I_c', pm.math.switch(cutremur, 0.03, 0.01))
-        incendiu = pm.Bernoulli('I', p=incendiu_cutremur)
+        incendiu = pm.Bernoulli('I_c', pm.math.switch(cutremur, 0.03, 0.01))
         # probabilitate declansare alarma incendiu in functie de cutremur
-        alarma_cutremur = pm.Deterministic('A_c', pm.math.switch(cutremur, 0.02, 0.0001))
-        alarma = pm.Bernoulli('A', p=alarma_cutremur)
+        alarma_cutremur = pm.Bernoulli('A_c', pm.math.switch(cutremur, 0.02, 0.0001))
         # probabilitate declansare alarma de incendiu in caz de incendiu
         alarma_i = pm.Deterministic('A_i', pm.math.switch(cutremur, 0.98, 0.95))
         alarma_incendiu = pm.Bernoulli('A_incendiu', p=alarma_i, observed=1)
@@ -25,8 +23,8 @@ if __name__ == '__main__':
 
         dictionary = {
             'cutremur': trace['C'].tolist(),
-            'incendiu': trace['I'].tolist(),
-            'alarma': trace['A'].tolist(),
+            'incendiu': trace['I_c'].tolist(),
+            'alarma_cutremur': trace['A_c'].tolist(),
         }
 
         dataframe = pd.DataFrame(dictionary)
